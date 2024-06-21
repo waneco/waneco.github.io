@@ -50,6 +50,8 @@ SetWindow.bat
 @echo off
 PowerShell -ExecutionPolicy Bypass -File "SetWindow.ps1"
         
+Get-Process | Where-Object { $_.MainWindowTitle } | Select-Object MainWindowTitle      
+
     </code></pre>
 </body>
 </html>
