@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to my GitHub Pages</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>Welcome to my personal website hosted on GitHub Pages.</p>
+    <pre><code>
+SetWindow.ps1
+        Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+    public struct RECT {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+}
+"@
+
+function Set-WindowPosition {
+    param (
+        [string]$windowTitle,
+        [int]$x,
+        [int]$y,
+        [int]$width,
+        [int]$height
+    )
+    $hwnd = [Win32]::FindWindow($null, $windowTitle)
+    if ($hwnd -eq [IntPtr]::Zero) {
+        Write-Host "Window not found"
+        return
+    }
+    [Win32]::MoveWindow($hwnd, $x, $y, $width, $height, $true) | Out-Null
+}
+
+# ウィンドウタイトル、位置、サイズを指定
+Set-WindowPosition -windowTitle "ウィンドウタイトルをここに入力" -x 100 -y 100 -width 800 -height 600
+        
+SetWindow.bat
+@echo off
+PowerShell -ExecutionPolicy Bypass -File "SetWindow.ps1"
+        
+    </code></pre>
+</body>
+</html>
